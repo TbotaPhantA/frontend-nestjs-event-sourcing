@@ -14,7 +14,6 @@ const TablesPage = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Warehouse" />
-
       <div className="flex min-h-screen flex-col gap-10">
         <TableStockItems />
       </div>
