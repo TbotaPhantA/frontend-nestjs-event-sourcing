@@ -6,7 +6,7 @@ import TableStockItems from "@/components/Tables/TableStockItems";
 import { StockItem } from "@/types/stockItem";
 import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { InventoryAdjustmentEnum } from "@/types/enums/inventoryAdjustment.enum";
-import WarehouseCommandsPanel from "@/app/ui/buttons/warehouseCommandsPanel";
+import WarehouseCommandsPanel from "@/app/warehouse/warehouseCommandsPanel";
 
 export const metadata: Metadata = {
   title: "Next.js Tables | TailAdmin - Next.js Dashboard Template",
