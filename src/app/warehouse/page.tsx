@@ -6,6 +6,7 @@ import TableStockItems from "@/components/Tables/TableStockItems";
 import { StockItem } from "@/types/stockItem";
 import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { InventoryAdjustmentEnum } from "@/types/enums/inventoryAdjustment.enum";
+import WarehouseCommandsPanel from "@/app/ui/buttons/warehouseCommandsPanel";
 
 export const metadata: Metadata = {
   title: "Next.js Tables | TailAdmin - Next.js Dashboard Template",
@@ -82,6 +83,7 @@ const TablesPage = async () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Warehouse" />
+      <WarehouseCommandsPanel />
       <div className="flex min-h-screen flex-col gap-10">
         <TableStockItems stockItems={stockItems} />
       </div>
