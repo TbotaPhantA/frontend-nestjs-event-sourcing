@@ -1,8 +1,6 @@
-import { Dispatch, SetStateAction } from "react";
-
 interface SwitcherTwoProps {
   enabled: boolean;
-  setEnabled: Dispatch<SetStateAction<boolean>>;
+  setEnabled: (value: boolean) => void;
 }
 
 const SwitcherTwo = ({ enabled, setEnabled }: SwitcherTwoProps) => {

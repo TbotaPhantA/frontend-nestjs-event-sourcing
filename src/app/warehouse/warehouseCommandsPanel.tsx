@@ -44,6 +44,7 @@ const WarehouseCommandsPanel = () => {
           onRequestClose={closeFilterModal}
           style={modalWindowStyles}
           preventScroll={true}
+          appElement={document.getElementById("app") as HTMLElement}
         >
           <FilterModal />
         </Modal>
@@ -60,8 +61,9 @@ const WarehouseCommandsPanel = () => {
           onRequestClose={closeAddItemModal}
           style={modalWindowStyles}
           preventScroll={true}
+          appElement={document.getElementById("app") as HTMLElement}
         >
-          <AddItemModal />
+          <AddItemModal closeModal={closeAddItemModal} />
         </Modal>
       )}
     </div>

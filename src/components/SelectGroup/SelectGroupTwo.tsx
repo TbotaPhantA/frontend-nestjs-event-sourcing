@@ -1,8 +1,19 @@
 "use client";
 import React, { useState } from "react";
 
-const SelectGroupTwo: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string>("");
+type SelectGroupTwoProps<T extends string> = {
+  title: string;
+  optionValues: string[];
+  value: T;
+  setValue: (value: T) => void;
+};
+
+const SelectGroupTwo = <T extends string>({
+  title,
+  optionValues,
+  value,
+  setValue,
+}: SelectGroupTwoProps<T>) => {
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
 
   const changeTextColor = () => {
@@ -12,7 +23,7 @@ const SelectGroupTwo: React.FC = () => {
   return (
     <div>
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-        Select Country
+        {title}
       </label>
 
       <div className="relative z-20 bg-white dark:bg-form-input">
@@ -48,27 +59,24 @@ const SelectGroupTwo: React.FC = () => {
         </span>
 
         <select
-          value={selectedOption}
+          value={value}
           onChange={(e) => {
-            setSelectedOption(e.target.value);
+            setValue(e.target.value as T);
             changeTextColor();
           }}
           className={`relative z-20 w-full appearance-none rounded border border-stroke bg-transparent px-12 py-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input ${
             isOptionSelected ? "text-black dark:text-white" : ""
           }`}
         >
-          <option value="" disabled className="text-body dark:text-bodydark">
-            Select Country
-          </option>
-          <option value="USA" className="text-body dark:text-bodydark">
-            USA
-          </option>
-          <option value="UK" className="text-body dark:text-bodydark">
-            UK
-          </option>
-          <option value="Canada" className="text-body dark:text-bodydark">
-            Canada
-          </option>
+          {optionValues.map((value) => (
+            <option
+              key={value}
+              value={value}
+              className="text-body dark:text-bodydark"
+            >
+              {value}
+            </option>
+          ))}
         </select>
 
         <span className="absolute right-4 top-1/2 z-10 -translate-y-1/2">
