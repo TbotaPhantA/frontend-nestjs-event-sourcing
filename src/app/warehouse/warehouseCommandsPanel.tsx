@@ -6,7 +6,7 @@ import Modal from "react-modal";
 
 const modalWindowStyles = {
   content: {
-    top: "12%",
+    top: "10%",
     left: "35%",
     right: "auto",
     bottom: "auto",
@@ -14,7 +14,6 @@ const modalWindowStyles = {
     borderRadius: "10px",
     borderWidth: "0",
     padding: "0",
-    overflow: "hidden",
     width: "40vw",
   },
   overlay: {

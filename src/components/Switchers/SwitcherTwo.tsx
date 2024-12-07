@@ -1,17 +1,16 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 
-const SwitcherTwo = () => {
-  const [enabled, setEnabled] = useState(false);
+interface SwitcherTwoProps {
+  enabled: boolean;
+  setEnabled: Dispatch<SetStateAction<boolean>>;
+}
 
+const SwitcherTwo = ({ enabled, setEnabled }: SwitcherTwoProps) => {
   return (
     <div x-data="{ switcherToggle: false }">
-      <label
-        htmlFor="toggle2"
-        className="flex cursor-pointer select-none items-center"
-      >
+      <label className="flex cursor-pointer select-none items-center">
         <div className="relative">
           <input
-            id="toggle2"
             type="checkbox"
             className="sr-only"
             onChange={() => {
