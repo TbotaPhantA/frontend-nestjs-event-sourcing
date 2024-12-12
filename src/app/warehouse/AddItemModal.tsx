@@ -4,6 +4,7 @@ import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
 import { StockItem } from "@/types/stockItem";
 import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { SubmitErrorHandler, SubmitHandler, useForm } from "react-hook-form";
+import { v4 as uuid } from "uuid";
 
 type AddStockItemForm = Pick<
   StockItem,
@@ -35,9 +36,39 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
   const { isFlammable, isFragile, temperatureMode } = watch();
 
-  const submit: SubmitHandler<AddStockItemForm> = (data) => {
+  const submit: SubmitHandler<AddStockItemForm> = async (data) => {
     console.log(data);
-    closeModal();
+
+    let response = await fetch(
+      "http://localhost:3001/storage/stock-month/add-received-items",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          requestId: uuid(),
+          locationId: "1",
+          gateNumber: "1",
+          items: [
+            {
+              id: uuid(),
+              ...data,
+            },
+          ],
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      },
+    );
+
+    // TODO: show error when receiving error
+    const body = await response.json();
+    console.log({ response });
+    console.log({ status: response.statusText });
+    console.log({ statusType: typeof response.statusText });
+
+    if (response.status >= 200 && response.status < 300) {
+      closeModal();
+    }
   };
 
   const error: SubmitErrorHandler<AddStockItemForm> = (data) => {
@@ -119,7 +150,11 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
             type="number"
             placeholder="Weight (kg)"
             className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-            {...register("weightGrams", { required: true, min: 0 })}
+            {...register("weightGrams", {
+              valueAsNumber: true,
+              required: true,
+              min: 0,
+            })}
           />
         </div>
 
