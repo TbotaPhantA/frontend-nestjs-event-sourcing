@@ -10,9 +10,10 @@ interface Option {
 interface DropdownProps {
   id: string;
   title: string;
+  optionValues: string[];
 }
 
-const MultiSelect: React.FC<DropdownProps> = ({ id, title }) => {
+const MultiSelect: React.FC<DropdownProps> = ({ id, title, optionValues }) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
@@ -95,21 +96,20 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, title }) => {
   });
 
   return (
-    <div className="relative z-50">
+    <div className="relative">
       <label className="mb-3 block text-sm font-medium text-black dark:text-white">
         {title}
       </label>
       <div>
         <select className="hidden" id={id}>
-          <option value="1">Option 2</option>
-          <option value="2">Option 3</option>
-          <option value="3">Option 4</option>
-          <option value="4">Option 5</option>
+          {optionValues.map((value) => (
+            <option value={value}>{value}</option>
+          ))}
         </select>
 
         <div className="flex flex-col items-center">
           <input name="values" type="hidden" defaultValue={selectedValues()} />
-          <div className="relative z-20 inline-block w-full">
+          <div className="relative inline-block w-full">
             <div className="relative flex flex-col items-center">
               <div ref={trigger} onClick={open} className="w-full">
                 <div className="mb-2 flex rounded border border-stroke py-2 pl-3 pr-3 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
@@ -185,7 +185,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, title }) => {
               </div>
               <div className="w-full px-4">
                 <div
-                  className={`max-h-select absolute left-0 top-full z-40 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${
+                  className={`max-h-select absolute left-0 top-full z-50 w-full overflow-y-auto rounded bg-white shadow dark:bg-form-input ${
                     isOpen() ? "" : "hidden"
                   }`}
                   ref={dropdownRef}

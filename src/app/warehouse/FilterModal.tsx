@@ -2,6 +2,7 @@ import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { useForm } from "react-hook-form";
 import MultiSelect from "@/components/FormElements/MultiSelect";
 import React from "react";
+import { BooleanEnum } from "@/types/enums/boolean.enum";
 
 type FilterForm = Partial<{
   itemName: string;
@@ -43,9 +44,21 @@ function FilterModal() {
           />
         </div>
 
-        <MultiSelect id="multiSelect" title="Is flammable" />
-        <MultiSelect id="multiSelect" title="Is fragile" />
-        <MultiSelect id="multiSelect" title="Temperature mode" />
+        <MultiSelect
+          id="isFlammableFilter"
+          title="Is flammable"
+          optionValues={Object.values(BooleanEnum)}
+        />
+        <MultiSelect
+          id="isFragileFilter"
+          title="Is fragile"
+          optionValues={Object.values(BooleanEnum)}
+        />
+        <MultiSelect
+          id="temperatureModeFilter"
+          title="Temperature mode"
+          optionValues={Object.values(TemperatureModeEnum)}
+        />
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
             Min weight (grams)
@@ -75,6 +88,10 @@ function FilterModal() {
             })}
           />
         </div>
+
+        <button className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
+          Add item
+        </button>
       </div>
     </div>
   );

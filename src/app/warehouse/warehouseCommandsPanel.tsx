@@ -6,7 +6,7 @@ import Modal from "react-modal";
 
 const modalWindowStyles = {
   content: {
-    top: "10%",
+    top: "9%",
     left: "35%",
     right: "auto",
     bottom: "auto",
