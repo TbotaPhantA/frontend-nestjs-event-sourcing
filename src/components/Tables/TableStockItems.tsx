@@ -1,12 +1,56 @@
+"use client";
 import { StockItem } from "@/types/stockItem";
 import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { exhaustiveCheck } from "@/shared/utils/exhaustiveCheck";
+import { useEffect, useState } from "react";
+import { useSocket } from "@/hooks/useSocket";
 
-interface TableStockItemsProps {
-  stockItems: StockItem[];
-}
+const TableStockItems = () => {
+  const [items, setItems] = useState<StockItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-const TableStockItems = ({ stockItems }: TableStockItemsProps) => {
+  useEffect(() => {
+    const fetchItems = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(
+          "http://127.0.0.1:3001/storage/stock-month/get-stock-items",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              limit: 20,
+              offset: 0,
+              filter: {},
+            }),
+            headers: {
+              "Content-type": "application/json",
+              accept: "application/json",
+            },
+          },
+        );
+        const data = await response.json();
+        console.log(data);
+        setItems(data.items);
+        setError(null);
+      } catch (err) {
+        setError("Failed to fetch initial data");
+        console.error("Error fetching items:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchItems();
+  }, []);
+
+  useSocket({
+    url: "http://localhost:3001",
+    onStockEvent: (event) => {
+      setItems([...event.data.items, ...items]);
+    },
+  });
+
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="px-4 py-6 md:px-6 xl:px-7.5">
@@ -36,7 +80,7 @@ const TableStockItems = ({ stockItems }: TableStockItemsProps) => {
         </div>
       </div>
 
-      {stockItems.map((item, key) => (
+      {items.map((item, key) => (
         <div
           className="grid grid-cols-6 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5"
           key={key}
