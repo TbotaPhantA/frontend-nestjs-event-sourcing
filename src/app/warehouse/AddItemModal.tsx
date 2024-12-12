@@ -37,8 +37,6 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
   const { isFlammable, isFragile, temperatureMode } = watch();
 
   const submit: SubmitHandler<AddStockItemForm> = async (data) => {
-    console.log(data);
-
     let response = await fetch(
       "http://localhost:3001/storage/stock-month/add-received-items",
       {
@@ -62,9 +60,6 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
     // TODO: show error when receiving error
     const body = await response.json();
-    console.log({ response });
-    console.log({ status: response.statusText });
-    console.log({ statusType: typeof response.statusText });
 
     if (response.status >= 200 && response.status < 300) {
       closeModal();
