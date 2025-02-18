@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
 };
 
-const TablesPage = async () => {
+const WarehousePage = async () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Warehouse" />
@@ -23,4 +23,4 @@ const TablesPage = async () => {
   );
 };
 
-export default TablesPage;
+export default WarehousePage;

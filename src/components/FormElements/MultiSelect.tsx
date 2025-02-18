@@ -103,7 +103,9 @@ const MultiSelect: React.FC<DropdownProps> = ({ id, title, optionValues }) => {
       <div>
         <select className="hidden" id={id}>
           {optionValues.map((value) => (
-            <option value={value}>{value}</option>
+            <option value={value} key={value}>
+              {value}
+            </option>
           ))}
         </select>
 

@@ -4,19 +4,19 @@ import MultiSelect from "@/components/FormElements/MultiSelect";
 import React from "react";
 import { BooleanEnum } from "@/types/enums/boolean.enum";
 
-type FilterForm = Partial<{
+type FilterForm = {
   itemName: string;
   isFlammable: boolean[];
   isFragile: boolean[];
   temperatureMode: TemperatureModeEnum[];
   minWeight: number;
   maxWeight: number;
-}>;
+};
 
 function FilterModal() {
   const { register, handleSubmit, watch, setValue } = useForm<FilterForm>({
     defaultValues: {
-      itemName: undefined,
+      itemName: "",
       isFlammable: undefined,
       isFragile: undefined,
       temperatureMode: undefined,
