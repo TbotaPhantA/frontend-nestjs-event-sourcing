@@ -8,21 +8,17 @@ import {
   FilterForm,
   filterFormDefaultValues,
 } from "@/app/warehouse/FilterModal";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const WarehousePage = () => {
   const [filters, setFilters] = useState<FilterForm>(filterFormDefaultValues);
-
-  useEffect(() => {
-    console.log({ filters });
-  }, [filters]);
 
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Warehouse" />
       <WarehouseCommandsPanel setFilters={setFilters} />
       <div className="flex min-h-screen flex-col gap-10">
-        <TableStockItems />
+        <TableStockItems filters={filters} />
       </div>
     </DefaultLayout>
   );

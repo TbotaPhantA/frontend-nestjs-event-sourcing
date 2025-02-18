@@ -4,8 +4,13 @@ import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { exhaustiveCheck } from "@/shared/utils/exhaustiveCheck";
 import { useEffect, useState } from "react";
 import { useSocket } from "@/hooks/useSocket";
+import { FilterForm } from "@/app/warehouse/FilterModal";
 
-const TableStockItems = () => {
+interface TableStockItemsProps {
+  filters: FilterForm;
+}
+
+const TableStockItems = ({ filters }: TableStockItemsProps) => {
   const [items, setItems] = useState<StockItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,7 +26,7 @@ const TableStockItems = () => {
             body: JSON.stringify({
               limit: 20,
               offset: 0,
-              filter: {},
+              filter: filters || {},
             }),
             headers: {
               "Content-type": "application/json",
@@ -42,7 +47,7 @@ const TableStockItems = () => {
     };
 
     fetchItems();
-  }, []);
+  }, [filters]);
 
   useSocket({
     url: "http://localhost:3001",
