@@ -1,4 +1,4 @@
 export enum BooleanEnum {
-  true = "ture",
+  true = "true",
   false = "false",
 }
