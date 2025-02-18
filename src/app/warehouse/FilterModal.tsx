@@ -14,16 +14,34 @@ type FilterForm = {
 };
 
 function FilterModal() {
-  const { register, handleSubmit, watch, setValue } = useForm<FilterForm>({
+  const { register, setValue } = useForm<FilterForm>({
     defaultValues: {
       itemName: "",
-      isFlammable: undefined,
-      isFragile: undefined,
-      temperatureMode: undefined,
+      isFlammable: [],
+      isFragile: [],
+      temperatureMode: [],
       minWeight: 0,
       maxWeight: 100_000_000,
     },
   });
+
+  const handleSelectedIsFlammableOptions = (options: string[]) => {
+    setValue(
+      "isFlammable",
+      options.map((o) => o === "true"),
+    );
+  };
+
+  const handleSelectedIsFragileOptions = (options: string[]) => {
+    setValue(
+      "isFragile",
+      options.map((o) => o === "true"),
+    );
+  };
+
+  const handleSelectedTemperatureModeOptions = (options: string[]) => {
+    setValue("temperatureMode", options as TemperatureModeEnum[]);
+  };
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -43,21 +61,23 @@ function FilterModal() {
             {...register("itemName", { minLength: 1 })}
           />
         </div>
-
         <MultiSelect
           id="isFlammableFilter"
           title="Is flammable"
           optionValues={Object.values(BooleanEnum)}
+          handleSelectedOptions={handleSelectedIsFlammableOptions}
         />
         <MultiSelect
           id="isFragileFilter"
           title="Is fragile"
           optionValues={Object.values(BooleanEnum)}
+          handleSelectedOptions={handleSelectedIsFragileOptions}
         />
         <MultiSelect
           id="temperatureModeFilter"
           title="Temperature mode"
           optionValues={Object.values(TemperatureModeEnum)}
+          handleSelectedOptions={handleSelectedTemperatureModeOptions}
         />
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
@@ -90,7 +110,7 @@ function FilterModal() {
         </div>
 
         <button className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
-          Add item
+          Apply
         </button>
       </div>
     </div>

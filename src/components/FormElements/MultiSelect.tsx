@@ -11,14 +11,27 @@ interface DropdownProps {
   id: string;
   title: string;
   optionValues: string[];
+  handleSelectedOptions: (options: string[]) => void;
 }
 
-const MultiSelect: React.FC<DropdownProps> = ({ id, title, optionValues }) => {
+const MultiSelect: React.FC<DropdownProps> = ({
+  id,
+  title,
+  optionValues,
+  handleSelectedOptions,
+}) => {
   const [options, setOptions] = useState<Option[]>([]);
   const [selected, setSelected] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const dropdownRef = useRef<any>(null);
   const trigger = useRef<any>(null);
+
+  useEffect(() => {
+    const selectedOptions = options
+      .filter((o) => o.selected)
+      .map((o) => o.value);
+    handleSelectedOptions(selectedOptions);
+  }, [options]);
 
   useEffect(() => {
     const loadOptions = () => {
