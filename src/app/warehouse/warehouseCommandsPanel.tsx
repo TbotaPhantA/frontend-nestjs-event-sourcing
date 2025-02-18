@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import FilterModal from "@/app/warehouse/FilterModal";
+import FilterModal, { FilterForm } from "@/app/warehouse/FilterModal";
 import AddItemModal from "@/app/warehouse/AddItemModal";
 import Modal from "react-modal";
 
@@ -21,7 +21,13 @@ const modalWindowStyles = {
   },
 };
 
-const WarehouseCommandsPanel = () => {
+interface WarehouseCommandsPanelProps {
+  setFilters: (filter: FilterForm) => void;
+}
+
+const WarehouseCommandsPanel = ({
+  setFilters,
+}: WarehouseCommandsPanelProps) => {
   const [isFilterModalOpened, setIsFilterModalOpened] = useState(false);
   const [isAddItemModalOpened, setIsAddItemModalOpened] = useState(false);
 
@@ -46,7 +52,7 @@ const WarehouseCommandsPanel = () => {
           preventScroll={true}
           appElement={document.getElementById("app") as HTMLElement}
         >
-          <FilterModal />
+          <FilterModal setFilters={setFilters} closeModal={closeFilterModal} />
         </Modal>
       )}
       <button

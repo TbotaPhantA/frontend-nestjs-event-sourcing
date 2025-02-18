@@ -1,21 +1,26 @@
+"use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TableStockItems from "@/components/Tables/TableStockItems";
 import WarehouseCommandsPanel from "@/app/warehouse/warehouseCommandsPanel";
+import {
+  FilterForm,
+  filterFormDefaultValues,
+} from "@/app/warehouse/FilterModal";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-  title: "Next.js Tables | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
+const WarehousePage = () => {
+  const [filters, setFilters] = useState<FilterForm>(filterFormDefaultValues);
 
-const WarehousePage = async () => {
+  useEffect(() => {
+    console.log({ filters });
+  }, [filters]);
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Warehouse" />
-      <WarehouseCommandsPanel />
+      <WarehouseCommandsPanel setFilters={setFilters} />
       <div className="flex min-h-screen flex-col gap-10">
         <TableStockItems />
       </div>

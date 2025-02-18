@@ -31,7 +31,7 @@ const MultiSelect: React.FC<DropdownProps> = ({
       .filter((o) => o.selected)
       .map((o) => o.value);
     handleSelectedOptions(selectedOptions);
-  }, [options]);
+  }, [options, handleSelectedOptions]);
 
   useEffect(() => {
     const loadOptions = () => {

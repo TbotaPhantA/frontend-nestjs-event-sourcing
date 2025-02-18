@@ -4,7 +4,7 @@ import MultiSelect from "@/components/FormElements/MultiSelect";
 import React from "react";
 import { BooleanEnum } from "@/types/enums/boolean.enum";
 
-type FilterForm = {
+export type FilterForm = {
   itemName: string;
   isFlammable: boolean[];
   isFragile: boolean[];
@@ -13,17 +13,29 @@ type FilterForm = {
   maxWeight: number;
 };
 
-function FilterModal() {
-  const { register, setValue } = useForm<FilterForm>({
-    defaultValues: {
-      itemName: "",
-      isFlammable: [],
-      isFragile: [],
-      temperatureMode: [],
-      minWeight: 0,
-      maxWeight: 100_000_000,
-    },
+export const filterFormDefaultValues = {
+  itemName: "",
+  isFlammable: [],
+  isFragile: [],
+  temperatureMode: [],
+  minWeight: 0,
+  maxWeight: 100_000_000,
+};
+
+interface FilterModalProps {
+  setFilters: (filter: FilterForm) => void;
+  closeModal: () => any;
+}
+
+function FilterModal({ setFilters, closeModal }: FilterModalProps) {
+  const { register, setValue, getValues } = useForm<FilterForm>({
+    defaultValues: filterFormDefaultValues,
   });
+
+  const handleApplyFilters = () => {
+    setFilters(getValues());
+    closeModal();
+  };
 
   const handleSelectedIsFlammableOptions = (options: string[]) => {
     setValue(
@@ -109,7 +121,10 @@ function FilterModal() {
           />
         </div>
 
-        <button className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
+        <button
+          className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
+          onClick={handleApplyFilters}
+        >
           Apply
         </button>
       </div>
