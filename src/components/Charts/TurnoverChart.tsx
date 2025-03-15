@@ -3,6 +3,7 @@
 import { ApexOptions } from "apexcharts";
 import React from "react";
 import dynamic from "next/dynamic";
+import moment from "moment";
 
 const ReactApexChart = dynamic(() => import("react-apexcharts"), {
   ssr: false,
@@ -89,6 +90,15 @@ const options: ApexOptions = {
   },
   xaxis: {
     type: "datetime",
+    labels: {
+      formatter(
+        value: string,
+        timestamp?: number,
+        opts?: any,
+      ): string | string[] {
+        return moment(timestamp).format("DD.MM.YYYY HH:mm");
+      },
+    },
     axisBorder: {
       show: false,
     },
@@ -108,56 +118,62 @@ const options: ApexOptions = {
 interface ChartOneState {
   series: {
     name: string;
-    data: { x: Date; y: number }[];
+    data: { x: string; y: number }[];
   }[];
 }
 
 interface TurnoverChartProps {
   name: string;
+  data?: { x: string; y: number }[];
 }
+
+const mockData = [
+  {
+    name: "Total",
+    data: [
+      {
+        x: new Date(2022, 0, 3).toISOString(),
+        y: 5,
+      },
+      {
+        x: new Date(2022, 0, 4).toISOString(),
+        y: 7,
+      },
+      {
+        x: new Date(2022, 0, 5).toISOString(),
+        y: 2,
+      },
+      {
+        x: new Date(2022, 0, 6).toISOString(),
+        y: 9,
+      },
+      {
+        x: new Date(2022, 0, 7).toISOString(),
+        y: 3,
+      },
+      {
+        x: new Date(2022, 0, 8).toISOString(),
+        y: 6,
+      },
+      {
+        x: new Date(2022, 0, 9).toISOString(),
+        y: 10,
+      },
+      {
+        x: new Date(2022, 0, 10).toISOString(),
+        y: 1,
+      },
+    ],
+  },
+];
 
 const TurnoverChart: React.FC<TurnoverChartProps> = ({
   name,
+  data,
 }: TurnoverChartProps) => {
-  const series: ChartOneState["series"] = [
-    {
-      name: "Total",
-      data: [
-        {
-          x: new Date(2022, 0, 3),
-          y: 5,
-        },
-        {
-          x: new Date(2022, 0, 4),
-          y: 7,
-        },
-        {
-          x: new Date(2022, 0, 5),
-          y: 2,
-        },
-        {
-          x: new Date(2022, 0, 6),
-          y: 9,
-        },
-        {
-          x: new Date(2022, 0, 7),
-          y: 3,
-        },
-        {
-          x: new Date(2022, 0, 8),
-          y: 6,
-        },
-        {
-          x: new Date(2022, 0, 9),
-          y: 10,
-        },
-        {
-          x: new Date(2022, 0, 10),
-          y: 1,
-        },
-      ],
-    },
-  ];
+  const series: ChartOneState["series"] = data
+    ? [{ name: "Total", data }]
+    : mockData;
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pb-5 pt-7.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
