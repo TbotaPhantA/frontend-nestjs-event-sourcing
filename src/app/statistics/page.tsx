@@ -1,18 +1,27 @@
+"use client";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TurnoverChart from "@/components/Charts/TurnoverChart";
 import PieChart from "@/components/Charts/PieChart";
+import { useEffect, useState } from "react";
 
-export const metadata: Metadata = {
-  title: "Next.js Tables | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Tables page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
+const StatisticsPage = () => {
+  const [receivingCountWindow, setReceivingCountWindow] =
+    useState<string>("1w");
+  const [receivingItemsResponse, setReceivingItemsResponse] =
+    useState<FetchReceivedItemsGraphDataResponse200>();
+  const [shippedCountWindow, setShippedCountWindow] = useState<string>("1w");
 
-const StatisticsPage = async () => {
-  const receivingItemsGraphData = await fetchReceivedItemsGraphData();
+  useEffect(() => {
+    async function fetchReceivingData() {
+      const receivingItemsGraphData =
+        await fetchReceivedItemsGraphData(receivingCountWindow);
+      setReceivingItemsResponse(receivingItemsGraphData);
+    }
+
+    fetchReceivingData();
+  }, [receivingCountWindow]);
 
   return (
     <DefaultLayout>
@@ -26,9 +35,15 @@ const StatisticsPage = async () => {
         </div>
         <TurnoverChart
           name="Items received"
-          data={receivingItemsGraphData.graphData}
+          data={receivingItemsResponse?.graphData}
+          setAggregationWindow={setReceivingCountWindow}
+          aggregationWindow={receivingCountWindow}
         />
-        <TurnoverChart name="Items shipped" />
+        <TurnoverChart
+          name="Items shipped"
+          setAggregationWindow={setShippedCountWindow}
+          aggregationWindow={shippedCountWindow}
+        />
       </div>
     </DefaultLayout>
   );
@@ -41,28 +56,29 @@ interface FetchReceivedItemsGraphDataResponse200 {
   }[];
 }
 
-const fetchReceivedItemsGraphData =
-  async (): Promise<FetchReceivedItemsGraphDataResponse200> => {
-    const res = await fetch(
-      "http://localhost:3001/storage/stock-month/statistics/products-received-count",
-      {
-        method: "POST",
-        headers: {
-          accept: "*/*",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ timeWindow: "1m" }),
-        // Optionally disable caching for this request:
-        cache: "no-store",
+const fetchReceivedItemsGraphData = async (
+  aggregationWindow: string,
+): Promise<FetchReceivedItemsGraphDataResponse200> => {
+  const res = await fetch(
+    "http://localhost:3001/storage/stock-month/statistics/products-received-count",
+    {
+      method: "POST",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ timeWindow: aggregationWindow }),
+      // Optionally disable caching for this request:
+      cache: "no-store",
+    },
+  );
 
-    // Check if the response is successful
-    if (!res.ok) {
-      throw new Error(`Failed to fetch data, status: ${res.status}`);
-    }
+  // Check if the response is successful
+  if (!res.ok) {
+    throw new Error(`Failed to fetch data, status: ${res.status}`);
+  }
 
-    return await res.json();
-  };
+  return await res.json();
+};
 
 export default StatisticsPage;

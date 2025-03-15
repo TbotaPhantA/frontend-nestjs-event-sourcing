@@ -125,6 +125,8 @@ interface ChartOneState {
 interface TurnoverChartProps {
   name: string;
   data?: { x: string; y: number }[];
+  setAggregationWindow: (window: string) => void;
+  aggregationWindow: string;
 }
 
 const mockData = [
@@ -170,6 +172,8 @@ const mockData = [
 const TurnoverChart: React.FC<TurnoverChartProps> = ({
   name,
   data,
+  setAggregationWindow,
+  aggregationWindow,
 }: TurnoverChartProps) => {
   const series: ChartOneState["series"] = data
     ? [{ name: "Total", data }]
@@ -181,20 +185,17 @@ const TurnoverChart: React.FC<TurnoverChartProps> = ({
         {name}
       </h2>
 
-      <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full max-w-45 justify-end">
-          <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white px-3 py-1 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Day
-            </button>
-            <button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Week
-            </button>
-            <button className="rounded px-3 py-1 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Month
-            </button>
-          </div>
-        </div>
+      <div>
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Aggregation window:
+        </label>
+        <input
+          type="text"
+          placeholder="Enter the aggregation window, for example 1m..."
+          className="w-half rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          defaultValue={aggregationWindow}
+          onChange={(event) => setAggregationWindow(event.target.value)}
+        />
       </div>
 
       <div>
