@@ -4,6 +4,16 @@ import { io, Socket } from "socket.io-client";
 import { StockItem } from "@/types/stockItem";
 
 interface OnStockEventParams {
+  seqId: number;
+  eventId: string;
+  eventName: string;
+  aggregateId: string;
+  aggregateName: string;
+  contextName: string;
+  causationId: string | null;
+  correlationId: string;
+  version: number;
+  createdAt: Date;
   data: {
     items: StockItem[];
   };
