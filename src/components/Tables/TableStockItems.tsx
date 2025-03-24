@@ -95,7 +95,14 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
   useSocket({
     url: "http://localhost:3001",
     onStockEvent: (event) => {
-      setItems([...event.data.items, ...items]);
+      if (event.eventName === "ItemsWereReceived") {
+        setItems([...event.data.items, ...items]);
+      } else if (event.eventName === "ItemsWereShipped") {
+        const removedItemIdsSet = new Set(
+          event.data.items.map((item) => item.id),
+        );
+        setItems(items.filter((item) => !removedItemIdsSet.has(item.id)));
+      }
     },
   });
 
