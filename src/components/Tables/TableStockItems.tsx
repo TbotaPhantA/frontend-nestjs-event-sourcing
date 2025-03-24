@@ -15,6 +15,49 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleRemoveShippedItems = async (item: StockItem) => {
+    console.log("hi");
+    try {
+      const response = await fetch(
+        "http://localhost:3001/storage/stock-month/remove-shipped-items",
+        {
+          method: "POST",
+          headers: {
+            accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            requestId: item.id,
+            locationId: item.locationId,
+            gateNumber: "1",
+            items: [
+              {
+                id: item.id,
+                itemName: item.itemName,
+                description: item.description,
+                isFlammable: item.isFlammable,
+                isFragile: item.isFragile,
+                temperatureMode: item.temperatureMode,
+                weightGrams: item.weightGrams,
+              },
+            ],
+          }),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Items removed successfully:", data);
+      // Add any success handling here
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  };
+
   useEffect(() => {
     const fetchItems = async () => {
       setIsLoading(true);
@@ -144,16 +187,17 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
             </p>
           </div>
           <div className="col-span-1 flex justify-center">
-            <button>
+            <button onClick={() => handleRemoveShippedItems(item)}>
               <svg
-                className="fill-gray-600 dark:fill-gray-200"
-                fill="none"
-                width="28px"
-                height="28px"
-                viewBox="0 0 1000 1000"
                 xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="31px"
+                height="31px"
               >
-                <path d="M767 336H233q-12 0-21 9t-9 21l38 505q1 13 12 21.5t30 8.5h434q18 0 29-8.5t13-21.5l38-505q0-12-9-21t-21-9zM344 841q-10 0-18-9t-8-21l-26-386q0-12 9-20.5t21-8.5 21 8.5 9 20.5l18 386q0 12-7.5 21t-18.5 9zm182-31q0 13-7.5 22t-18.5 9-18.5-9-7.5-22l-4-385q0-12 9-20.5t21-8.5 21 8.5 9 20.5zm156 1q0 12-8 21t-18 9q-11 0-18.5-9t-7.5-21l18-386q0-12 9-20.5t21-8.5 21 8.5 9 20.5zm101-605l-179-30q-12-2-15-15l-8-33q-4-20-14-26-6-3-22-3h-90q-16 0-23 3-10 6-13 26l-8 33q-2 13-15 15l-179 30q-19 3-31.5 14.5T173 249v28q0 9 6.5 15t15.5 6h610q9 0 15.5-6t6.5-15v-28q0-17-12.5-28.5T783 206z" />
+                <path
+                  fill="currentColor"
+                  d="M7.5 19q-1.038 0-1.77-.73T5 16.5H2.77l.218-1h2.268q.271-.667.875-1.084Q6.735 14 7.5 14t1.37.416q.603.417.874 1.084h4.618L16.558 6H5.608l.023-.098q.073-.392.38-.647T6.735 5h11.073l-.81 3.5h2.079l2.712 3.616l-.866 4.384h-1.154q0 1.039-.73 1.77t-1.77.73t-1.769-.73t-.73-1.77H10q0 1.039-.73 1.77T7.5 19m8.387-5.75h4.651l.177-.89l-2.138-2.86h-1.818zm.428-6.248L16.559 6l-2.197 9.5l.243-1.002l.792-3.496zM1.674 12.998l.25-1h4.48l-.25 1zm2-3.496l.25-1h5.48l-.25 1zM7.5 18q.617 0 1.059-.441Q9 17.117 9 16.5t-.441-1.059T7.5 15t-1.059.441Q6 15.883 6 16.5t.441 1.059Q6.883 18 7.5 18m9.77 0q.617 0 1.058-.441q.441-.442.441-1.059t-.441-1.059T17.269 15t-1.058.441q-.442.442-.442 1.059t.441 1.059q.442.441 1.06.441"
+                ></path>
               </svg>
             </button>
           </div>
