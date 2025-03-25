@@ -12,15 +12,21 @@ const StatisticsPage = () => {
   const [receivingItemsResponse, setReceivingItemsResponse] =
     useState<FetchReceivedItemsGraphDataResponse200>();
   const [shippedCountWindow, setShippedCountWindow] = useState<string>("1w");
+  const [shippedItemsResponse, setShippedItemsResponse] =
+    useState<FetchShippedItemsGraphDataResponse200>();
 
   useEffect(() => {
-    async function fetchReceivingData() {
-      const receivingItemsGraphData =
-        await fetchReceivedItemsGraphData(receivingCountWindow);
+    async function fetchData() {
+      const [receivingItemsGraphData, shippedItemsGraphData] =
+        await Promise.all([
+          fetchReceivedItemsGraphData(receivingCountWindow),
+          fetchShippedItemsGraphData(shippedCountWindow),
+        ]);
       setReceivingItemsResponse(receivingItemsGraphData);
+      setShippedItemsResponse(shippedItemsGraphData);
     }
 
-    fetchReceivingData();
+    fetchData();
   }, [receivingCountWindow]);
 
   return (
@@ -41,6 +47,7 @@ const StatisticsPage = () => {
         />
         <TurnoverChart
           name="Items shipped"
+          data={shippedItemsResponse?.graphData}
           setAggregationWindow={setShippedCountWindow}
           aggregationWindow={shippedCountWindow}
         />
@@ -56,11 +63,39 @@ interface FetchReceivedItemsGraphDataResponse200 {
   }[];
 }
 
+interface FetchShippedItemsGraphDataResponse200
+  extends FetchReceivedItemsGraphDataResponse200 {}
+
 const fetchReceivedItemsGraphData = async (
   aggregationWindow: string,
 ): Promise<FetchReceivedItemsGraphDataResponse200> => {
   const res = await fetch(
     "http://localhost:3001/storage/stock-month/statistics/products-received-count",
+    {
+      method: "POST",
+      headers: {
+        accept: "*/*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ timeWindow: aggregationWindow }),
+      // Optionally disable caching for this request:
+      cache: "no-store",
+    },
+  );
+
+  // Check if the response is successful
+  if (!res.ok) {
+    throw new Error(`Failed to fetch data, status: ${res.status}`);
+  }
+
+  return await res.json();
+};
+
+const fetchShippedItemsGraphData = async (
+  aggregationWindow: string,
+): Promise<FetchReceivedItemsGraphDataResponse200> => {
+  const res = await fetch(
+    "http://localhost:3001/storage/stock-month/statistics/shipped-products-count",
     {
       method: "POST",
       headers: {

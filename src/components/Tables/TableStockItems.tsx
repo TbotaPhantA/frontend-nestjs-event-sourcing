@@ -79,7 +79,7 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
         );
         const data = await response.json();
         console.log(data);
-        setItems(data.items);
+        setItems(items.concat(data.items || []));
         setError(null);
       } catch (err) {
         setError("Failed to fetch initial data");
