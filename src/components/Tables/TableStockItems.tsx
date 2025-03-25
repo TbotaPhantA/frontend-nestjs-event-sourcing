@@ -28,7 +28,7 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
           },
           body: JSON.stringify({
             requestId: item.id,
-            locationId: item.locationId,
+            locationId: "1",
             gateNumber: "1",
             items: [
               {
