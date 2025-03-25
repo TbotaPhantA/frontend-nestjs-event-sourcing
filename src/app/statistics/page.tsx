@@ -27,7 +27,7 @@ const StatisticsPage = () => {
     }
 
     fetchData();
-  }, [receivingCountWindow]);
+  }, [receivingCountWindow, shippedCountWindow]);
 
   return (
     <DefaultLayout>
