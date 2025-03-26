@@ -35,9 +35,16 @@ const StatisticsPage = () => {
 
       <div className="flex flex-col gap-10">
         <div className="flex flex-row justify-around">
-          <PieChart />
-          <PieChart />
-          <PieChart />
+          <PieChart
+            data={[
+              { label: "a", value: 1 },
+              { label: "b", value: 2 },
+              { label: "c", value: 3 },
+            ]}
+            total={6}
+          />
+          {/*<PieChart />*/}
+          {/*<PieChart />*/}
         </div>
         <TurnoverChart
           name="Items received"
