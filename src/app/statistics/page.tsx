@@ -9,10 +9,10 @@ import BarsChart from "@/components/Charts/BarsChart";
 
 const StatisticsPage = () => {
   const [receivingCountWindow, setReceivingCountWindow] =
-    useState<string>("1w");
+    useState<string>("1m");
   const [receivingItemsResponse, setReceivingItemsResponse] =
     useState<FetchReceivedItemsGraphDataResponse200>();
-  const [shippedCountWindow, setShippedCountWindow] = useState<string>("1w");
+  const [shippedCountWindow, setShippedCountWindow] = useState<string>("1m");
   const [shippedItemsResponse, setShippedItemsResponse] =
     useState<FetchShippedItemsGraphDataResponse200>();
 
