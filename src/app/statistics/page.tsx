@@ -5,6 +5,7 @@ import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import TurnoverChart from "@/components/Charts/TurnoverChart";
 import PieChart from "@/components/Charts/PieChart";
 import { useEffect, useState } from "react";
+import BarsChart from "@/components/Charts/BarsChart";
 
 const StatisticsPage = () => {
   const [receivingCountWindow, setReceivingCountWindow] =
@@ -63,11 +64,8 @@ const StatisticsPage = () => {
         <div className="flex flex-row justify-around">
           <PieChart title={"Is flammable"} data={isFlammableCountData} />
           <PieChart title={"Is fragile"} data={isFragileCountData} />
-          <PieChart
-            title={"Temperature mode"}
-            data={temperatureModeCountData}
-          />
         </div>
+        <BarsChart title={"Temperature mode"} data={temperatureModeCountData} />
         <TurnoverChart
           name="Items received"
           data={receivingItemsResponse?.graphData}

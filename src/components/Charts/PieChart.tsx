@@ -58,7 +58,6 @@ interface PieChartProps {
 }
 
 const PieChart: React.FC<PieChartProps> = ({ title, data }: PieChartProps) => {
-  // Process dynamic data
   const series = data?.graphData.map((item) => item.value) ?? [];
   const labels = data?.graphData.map((item) => item.label) ?? [];
 
