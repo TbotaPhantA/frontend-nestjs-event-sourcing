@@ -58,22 +58,28 @@ const StatisticsPage = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Statistics" />
+      <Breadcrumb pageName="Статистика" />
 
       <div className="flex flex-col gap-10">
         <div className="flex flex-row justify-around">
-          <PieChart title={"Is flammable"} data={isFlammableCountData} />
-          <PieChart title={"Is fragile"} data={isFragileCountData} />
+          <PieChart
+            title={"Доля легковоспломеняющихся товаров"}
+            data={isFlammableCountData}
+          />
+          <PieChart title={"Доля хрупких товаров"} data={isFragileCountData} />
         </div>
-        <BarsChart title={"Temperature mode"} data={temperatureModeCountData} />
+        <BarsChart
+          title={"Доли темперитурных тежимов"}
+          data={temperatureModeCountData}
+        />
         <TurnoverChart
-          name="Items received"
+          name="Количество добавленных товаров"
           data={receivingItemsResponse?.graphData}
           setAggregationWindow={setReceivingCountWindow}
           aggregationWindow={receivingCountWindow}
         />
         <TurnoverChart
-          name="Items shipped"
+          name="Количество отгруженных товаров"
           data={shippedItemsResponse?.graphData}
           setAggregationWindow={setShippedCountWindow}
           aggregationWindow={shippedCountWindow}

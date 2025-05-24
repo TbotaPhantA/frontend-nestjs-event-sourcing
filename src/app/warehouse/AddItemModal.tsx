@@ -77,13 +77,13 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
     >
       <div className="border-b border-stroke px-6.5 py-4 dark:border-strokedark">
         <h3 className="font-medium text-black dark:text-white">
-          AddItemModal Modal
+          Ручное добавление товара
         </h3>
       </div>
       <div className="flex flex-col gap-5.5 p-6.5">
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Name
+            Название
           </label>
           <input
             type="text"
@@ -95,7 +95,7 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Description
+            Описание
           </label>
           <input
             type="text"
@@ -107,7 +107,7 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Is flammable
+            Легковоспроменяющийся
           </label>
           <SwitcherTwo
             enabled={isFlammable}
@@ -117,7 +117,7 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Is fragile
+            Хрупкий
           </label>
           <SwitcherTwo
             enabled={isFragile}
@@ -126,11 +126,8 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
         </div>
 
         <div>
-          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Temperature mode
-          </label>
-          <SelectGroupTwo<TemperatureModeEnum>
-            title="Temperature mode"
+          <SelectGroupTwo
+            title="Температурный режим"
             optionValues={Object.values(TemperatureModeEnum)}
             value={temperatureMode}
             setValue={(value) => setValue("temperatureMode", value)}
@@ -139,7 +136,7 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
 
         <div>
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Weight (grams)
+            Вес (граммы)
           </label>
           <input
             type="number"
@@ -153,8 +150,19 @@ function AddItemModal({ closeModal }: AddItemModalProps) {
           />
         </div>
 
+        <div>
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+            Кол-во
+          </label>
+          <input
+            type="number"
+            placeholder="0"
+            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent px-5 py-3 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+          />
+        </div>
+
         <button className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-medium text-white hover:bg-opacity-90 lg:px-8 xl:px-10">
-          Add item
+          Добавить товар
         </button>
       </div>
     </form>

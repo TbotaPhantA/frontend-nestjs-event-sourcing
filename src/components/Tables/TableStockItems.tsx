@@ -79,7 +79,7 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
         );
 
         if (!response.ok) {
-          throw new Error('Response is not ok: ' + response.body);
+          throw new Error("Response is not ok: " + response.body);
         }
 
         const data = await response.json();
@@ -115,44 +115,47 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
       <div className="px-4 py-6 md:px-6 xl:px-7.5">
         <h4 className="text-xl font-semibold text-black dark:text-white">
-          Warehouse items
+          Состав склада
         </h4>
       </div>
 
-      <div className="grid grid-cols-8 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5">
+      <div className="grid grid-cols-9 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5">
         <div className="col-span-1 flex justify-center">
-          <p className="font-medium">Item name</p>
+          <p className="font-medium">Название</p>
         </div>
         <div className="col-span-2 hidden justify-center sm:flex">
-          <p className="font-medium">Description</p>
+          <p className="font-medium">Описание</p>
         </div>
         <div className="col-span-1 flex justify-center">
-          <p className="font-medium">Is flammable</p>
+          <p className="font-medium">Легковоспламеняющийся</p>
         </div>
         <div className="col-span-1 flex justify-center">
-          <p className="font-medium">Is fragile</p>
+          <p className="font-medium">Хрупкий</p>
         </div>
         <div className="col-span-1 flex justify-center">
-          <p className="font-medium">Temperature mode</p>
+          <p className="font-medium">Температуный признак</p>
         </div>
         <div className="col-span-1 flex justify-center">
-          <p className="font-medium">Weight grams(kg)</p>
+          <p className="font-medium">Вес(кг)</p>
+        </div>
+        <div className="col-span-1 flex justify-center">
+          <p className="font-medium">Кол-во</p>
         </div>
         <div className="col-span-1 flex justify-center"></div>
       </div>
 
       {items.map((item, key) => (
         <div
-          className="grid grid-cols-8 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-8 md:px-6 2xl:px-7.5"
+          className="grid grid-cols-9 border-t border-stroke px-4 py-4.5 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5"
           key={key}
         >
           <div className="col-span-1 flex justify-center">
-            <p className="text-sm text-black dark:text-white">
+            <p className="text-align-center text-sm text-black dark:text-white">
               {item.itemName}
             </p>
           </div>
           <div className="col-span-2 hidden justify-center sm:flex">
-            <p className="text-sm text-black dark:text-white">
+            <p className="text-align-center pl-2 text-sm  text-black dark:text-white">
               {item.description}
             </p>
           </div>
@@ -199,6 +202,11 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
             </p>
           </div>
           <div className="col-span-1 flex justify-center">
+            <p className="text-sm text-black dark:text-white">
+              {Math.ceil(Math.random() * 10)}
+            </p>
+          </div>
+          <div className="col-span-1 flex justify-center">
             <button onClick={() => handleRemoveShippedItems(item)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -210,6 +218,22 @@ const TableStockItems = ({ filters }: TableStockItemsProps) => {
                   fill="currentColor"
                   d="M7.5 19q-1.038 0-1.77-.73T5 16.5H2.77l.218-1h2.268q.271-.667.875-1.084Q6.735 14 7.5 14t1.37.416q.603.417.874 1.084h4.618L16.558 6H5.608l.023-.098q.073-.392.38-.647T6.735 5h11.073l-.81 3.5h2.079l2.712 3.616l-.866 4.384h-1.154q0 1.039-.73 1.77t-1.77.73t-1.769-.73t-.73-1.77H10q0 1.039-.73 1.77T7.5 19m8.387-5.75h4.651l.177-.89l-2.138-2.86h-1.818zm.428-6.248L16.559 6l-2.197 9.5l.243-1.002l.792-3.496zM1.674 12.998l.25-1h4.48l-.25 1zm2-3.496l.25-1h5.48l-.25 1zM7.5 18q.617 0 1.059-.441Q9 17.117 9 16.5t-.441-1.059T7.5 15t-1.059.441Q6 15.883 6 16.5t.441 1.059Q6.883 18 7.5 18m9.77 0q.617 0 1.058-.441q.441-.442.441-1.059t-.441-1.059T17.269 15t-1.058.441q-.442.442-.442 1.059t.441 1.059q.442.441 1.06.441"
                 ></path>
+              </svg>
+            </button>
+            <button
+              className="pl-2"
+              onClick={() => handleRemoveShippedItems(item)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="31px"
+                height="31px"
+                fill="currentColor"
+                className="bi bi-trash"
+                viewBox="0 0 16 16"
+              >
+                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
               </svg>
             </button>
           </div>

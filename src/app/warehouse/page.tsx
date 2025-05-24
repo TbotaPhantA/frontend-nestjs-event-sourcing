@@ -15,7 +15,7 @@ const WarehousePage = () => {
 
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="Warehouse" />
+      <Breadcrumb pageName="Склад" />
       <WarehouseCommandsPanel setFilters={setFilters} />
       <div className="flex min-h-screen flex-col gap-10">
         <TableStockItems filters={filters} />
