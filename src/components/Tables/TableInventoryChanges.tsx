@@ -2,35 +2,53 @@
 import { TemperatureModeEnum } from "@/types/enums/temperatureMode.enum";
 import { exhaustiveCheck } from "@/shared/utils/exhaustiveCheck";
 import React from "react";
+import { CurrentItem } from "@/components/Tables/TableInventoryCurrent";
 
-const TableInventoryChanges = () => {
-  const items = [
-    {
-      productId: "ea96b551-4c43-43fe-bf3e-df414a8ec860",
-      productName: "Семена газона",
-      amount: -5,
-    },
-    {
-      productId: "7c9d1e3f-5a6b-7c8d-9e0f-1a2b3c4d5e6f",
-      productName: "Горшок керамический",
-      amount: 8,
-    },
-    {
-      productId: "4f6a8b0c-2d3e-4f5a-6b7c-8d9e0f1a2b3c",
-      productName: "Полотенцесушитель",
-      amount: -3,
-    },
-    {
-      productId: "8868b1bf-708a-455c-99e5-b703a9d691ba",
-      productName: "Фанера",
-      amount: 4,
-    },
-    {
-      productId: "c2f651d9-ffb2-4344-ba09-4a7443835604",
-      productName: "Уголь берёзовый",
-      amount: 3,
-    },
-  ];
+interface ChangedItem {
+  productId: string;
+  productName: string;
+  amount: number;
+  item: CurrentItem;
+}
+
+export interface TableInventoryChangesProps {
+  items: CurrentItem[];
+  setItems: (items: CurrentItem[]) => any;
+  changedItems: ChangedItem[];
+  setChangedItems: (items: TableInventoryChangesProps["changedItems"]) => any;
+}
+
+const TableInventoryChanges = ({
+  items,
+  setItems,
+  changedItems,
+  setChangedItems,
+}: TableInventoryChangesProps) => {
+  function handlePlus(plusedItems: ChangedItem[]) {
+    const productIds = plusedItems.map((id) => id.productId);
+
+    plusedItems.map((item) => {
+      if (item.amount < 0) {
+        setItems([...items, item.item]);
+        setChangedItems(
+          changedItems.filter((i) => !productIds.includes(i.productId)),
+        );
+      }
+    });
+  }
+
+  function handleMinus(minusedItems: ChangedItem[]) {
+    const productIds = minusedItems.map((id) => id.productId);
+
+    minusedItems.map((item) => {
+      if (item.amount > 0) {
+        setItems([...items, item.item]);
+        setChangedItems(
+          changedItems.filter((i) => !productIds.includes(i.productId)),
+        );
+      }
+    });
+  }
 
   return (
     <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
@@ -40,7 +58,14 @@ const TableInventoryChanges = () => {
         </h4>
         <button
           className="inline-flex items-center justify-center rounded-md bg-meta-1 px-10 py-4 text-center font-bold text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-          onClick={() => {}}
+          onClick={() => {
+            const minused: ChangedItem[] = [];
+            const plused: ChangedItem[] = [];
+            changedItems.map((i) =>
+              i.amount > 0 ? minused.push(i) : plused.push(i),
+            );
+            handlePlus(plused);
+          }}
         >
           Отмеить все
           <svg
@@ -71,7 +96,7 @@ const TableInventoryChanges = () => {
         </div>
       </div>
 
-      {items.map((item, key) => {
+      {changedItems.map((item, key) => {
         const bgColor = item.amount < 0 ? "red" : "green";
 
         return (
@@ -95,7 +120,7 @@ const TableInventoryChanges = () => {
               </p>
             </div>
             <div className="col-span-1 flex justify-center">
-              <button className="pl-2" onClick={() => {}}>
+              <button className="pl-2" onClick={() => handlePlus([item])}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -107,7 +132,7 @@ const TableInventoryChanges = () => {
                   <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
                 </svg>
               </button>
-              <button className="pl-5" onClick={() => {}}>
+              <button className="pl-5" onClick={() => handleMinus([item])}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -122,7 +147,12 @@ const TableInventoryChanges = () => {
                   />
                 </svg>
               </button>
-              <button className="pl-10" onClick={() => {}}>
+              <button
+                className="pl-10"
+                onClick={() => {
+                  item.amount > 0 ? handleMinus([item]) : handlePlus([item]);
+                }}
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="22"
