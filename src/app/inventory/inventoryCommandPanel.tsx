@@ -1,8 +1,5 @@
 "use client";
-import { useState } from "react";
 import { FilterForm } from "@/app/warehouse/FilterModal";
-import AddItemModal from "@/app/warehouse/AddItemModal";
-import Modal from "react-modal";
 
 const modalWindowStyles = {
   content: {
@@ -25,37 +22,25 @@ interface WarehouseCommandsPanelProps {
   setFilters: (filter: FilterForm) => void;
 }
 
-const InventoryCommandPanel = () => {
-  const [isAddItemModalOpened, setIsAddItemModalOpened] = useState(false);
+interface InventoryCommandPanelProps {
+  saveSubmit: () => void;
+}
 
-  const openAddItemModal = () => setIsAddItemModalOpened(true);
-  const closeAddItemModal = () => setIsAddItemModalOpened(false);
-
+const InventoryCommandPanel = ({ saveSubmit }: InventoryCommandPanelProps) => {
   return (
     <div className="flex justify-end gap-5 pb-4 xl:gap-5">
       <button
         className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-bold text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-        onClick={openAddItemModal}
+        onClick={() => {}}
       >
         Добавить излишки
       </button>
       <button
         className="inline-flex items-center justify-center rounded-md bg-meta-3 px-10 py-4 text-center font-bold text-white hover:bg-opacity-90 lg:px-8 xl:px-10"
-        onClick={openAddItemModal}
+        onClick={() => saveSubmit()}
       >
         Сохранить
       </button>
-      {isAddItemModalOpened && (
-        <Modal
-          isOpen={isAddItemModalOpened}
-          onRequestClose={closeAddItemModal}
-          style={modalWindowStyles}
-          preventScroll={true}
-          appElement={document.getElementById("app") as HTMLElement}
-        >
-          <AddItemModal closeModal={closeAddItemModal} />
-        </Modal>
-      )}
     </div>
   );
 };

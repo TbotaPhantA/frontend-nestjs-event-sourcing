@@ -10,6 +10,8 @@ import TableInventoryCurrent, {
   TableInventoryCurrentProps,
 } from "@/components/Tables/TableInventoryCurrent";
 import { useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
+import { useRouter } from "next/navigation";
 
 const WarehousePage = () => {
   // const items = [
@@ -197,10 +199,48 @@ const WarehousePage = () => {
     fetchItems();
   }, []);
 
+  const router = useRouter();
+
+  const submit = async () => {
+    try {
+      console.log("1");
+      let response = await fetch(
+        "http://localhost:3001/storage/stock-month/adjust-inventory",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            requestId: uuid(),
+            locationId: "1",
+            surplusItems: changedItems
+              .filter((item) => item.amount > 0)
+              .map((item) => item.item),
+            shortageItems: changedItems
+              .filter((item) => item.amount < 0)
+              .map((item) => item.item),
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        },
+      );
+
+      console.log(response);
+
+      const body = await response.json();
+
+      if (response.status >= 200 && response.status < 300) {
+        console.log("3");
+        router.push("/warehouse");
+      }
+    } catch (error) {
+      console.error("Network error: ", error);
+    }
+  };
+
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Инвентаризация" />
-      <InventoryCommandPanel />
+      <InventoryCommandPanel saveSubmit={submit} />
       <div className="flex min-h-screen flex-row justify-around gap-5">
         <TableInventoryCurrent
           items={items}

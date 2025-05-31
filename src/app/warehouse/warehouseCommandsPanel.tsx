@@ -1,9 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FilterModal, { FilterForm } from "@/app/warehouse/FilterModal";
 import AddItemModal from "@/app/warehouse/AddItemModal";
 import Modal from "react-modal";
-import { Html5QrcodeScanner } from "html5-qrcode";
 import QRScannerModal from "@/app/warehouse/QrScannerModal";
 
 const modalWindowStyles = {
